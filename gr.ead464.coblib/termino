@@ -1,0 +1,5 @@
+         MACRO                                       
+         TERMINO                                     
+         L     R14,SAVER14     RECUPERAR             
+         BR    R14             VOLTA PARA O CHAMADOR 
+         MEND                                        

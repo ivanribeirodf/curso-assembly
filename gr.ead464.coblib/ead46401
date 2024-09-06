@@ -1,0 +1,25 @@
+EAD46401 CSECT                                            
+         USING EAD46401,R3     R3 REGISTRADOR BASE        
+         LR    R3,R15                                     
+         ST    R14,SAVER14                                
+         OPEN  (SAIDA,OUTPUT)  ABRIR SAIDA                
+         PUT   SAIDA,MSG       GRAVAR MENSAGEM            
+         CLOSE SAIDA           FECHAR SAIDA               
+         L     R14,SAVER14                                
+         BR    R14             VOLTA PARA O CHAMADOR      
+*********  VARIAVEIS *************                        
+R3       EQU   3                                          
+R14      EQU   14                                         
+R15      EQU   15                                         
+SAVER14  DS    F                                          
+MSG      DS    0CL133                                     
+         DC    CL1' '                                     
+         DC    CL11'HELLO WORLD'                                        
+         DC    121CL1' '                                                
+SAIDA    DCB   DDNAME=SAIDA,      NOME DO ARQUIVO                      *
+               DSORG=PS,                                               *
+               MACRF=PM,                                               *
+               LRECL=133,                                              *
+               RECFM=FBA,                                              *
+               BLKSIZE=6650                                             
+         END                                                            

@@ -1,0 +1,123 @@
+EAD46406 CSECT                                                      
+         INICIO EAD46406,R3    MACRO INICIO                         
+*****************  ABRIR ARQUIVOS ********************              
+         OPEN  (ENTRADA,INPUT)   ABRIR ENTRADA                      
+         OPEN  (SAIDA,OUTPUT)    ABRIR SAIDA                        
+*               CAPTURAR DADOS                                      
+         GET   ENTRADA,DADOS     LER PRIMEIRO NUMERO                
+         MVC   N1,DADOIN         CARREGAR DADO EM N1                
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                      
+         MVC   MSGOUT(5),=C'N1 = '  MONTAR LITERAL 'N1 = ' EM MSGOUT
+         MVC   MSGOUT+5(2),N1       MOSTRAR N1 EM MSGOUT            
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                    
+*                                                                   
+         GET   ENTRADA,DADOS     LER SEGUNDO NUMERO                 
+         MVC   N2,DADOIN         CARREGAR DADO EM N2                
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                      
+         MVC   MSGOUT(5),=C'N2 = '  MONTAR LITERAL 'N2 = ' EM MSGOUT 
+         MVC   MSGOUT+5(2),N2       MOSTRAR N2 EM MSGOUT             
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                     
+*                                                                    
+         GET   ENTRADA,DADOS     LER TERCEIRO NUMERO                 
+         MVC   N3,DADOIN         CARREGAR DADO EM N3                 
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                       
+         MVC   MSGOUT(5),=C'N3 = '  MONTAR LITERAL 'N3 = ' EM MSGOUT 
+         MVC   MSGOUT+5(2),N3       MOSTRAR N3 EM MSGOUT             
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                     
+*                                                                    
+FIMARQ   EQU   *                                                     
+*               LOGICA DE DECICAO                                    
+         CLC   N1,N2             COMPARAR N1 E N2                    
+         BH    P01               DESVIAR P P01 QUANDO N1 > N2        
+         BE    P02               DESVIAR P P02 QUANDO N1 = N2        
+*               TRATAR N1 < N2                                          
+         CLC   N2,N3             COMPARAR N2 E N3                       
+         BH    P03               DESVIAR P P03 QUANDO N1 < N2 E N2 > N3 
+         BE    P04               DESVIAR P P04 QUANDO N1 < N2 E N2 = N3 
+*               TRATAR N1 < N2 E N2 < N3                                
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                          
+         MVC   MSGOUT(19),=C'N3 EH O MAIOR VALOR'   EXIBIR N3 MAIOR     
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                        
+         B     P99         DESVIAR PARA FIM                             
+P01      EQU   *           TRATAR N1 > N2                               
+         CLC   N1,N3             COMPARAR N1 E N3                       
+         BH    P05               DESVIAR P P05 QUANDO N1 > N2 E N1 > N3 
+         BE    P06               DESVIAR P P06 QUANDO N1 > N2 E N1 = N3 
+*               TRATAR N1 > N2 E N1 < N3                                
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                          
+         MVC   MSGOUT(19),=C'N3 EH O MAIOR VALOR'   EXIBIR N3 MAIOR     
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                       
+         B     P99         DESVIAR PARA FIM                            
+P02      EQU   *           TRATAR N1 = N2                              
+         CLC   N1,N3             COMPARAR N1 E N3                      
+         BH    P07               DESVIAR P P07 QUANDO N1 = N2 E N1 > N3
+         BE    P08               DESVIAR P P08 QUANDO N1 = N2 E N1 = N3
+*               TRATAR N1 = N2 E N1 < N3                               
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                         
+         MVC   MSGOUT(19),=C'N3 EH O MAIOR VALOR'   EXIBIR N3 MAIOR    
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                       
+         B     P99         DESVIAR PARA FIM                            
+P03      EQU   *           TRATAR N1 < N2 E N2 > N3                    
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                         
+         MVC   MSGOUT(19),=C'N2 EH O MAIOR VALOR'   EXIBIR N2 MAIOR    
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                       
+         B     P99         DESVIAR PARA FIM                            
+P04      EQU   *           TRATAR N1 < N2 E N2 = N3                
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                     
+         MVC   MSGOUT(30),=C'N2 E N3 SAO OS MAIORES VALORES'       
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                   
+         B     P99         DESVIAR PARA FIM                        
+P05      EQU   *           TRATAR N1 > N2 E N1 > N3                
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                     
+         MVC   MSGOUT(19),=C'N1 EH O MAIOR VALOR'   EXIBIR N1 MAIOR
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                   
+         B     P99         DESVIAR PARA FIM                        
+P06      EQU   *           TRATAR N1 > N2 E N1 = N3                
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                     
+         MVC   MSGOUT(30),=C'N1 E N3 SAO OS MAIORES VALORES'       
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                   
+         B     P99         DESVIAR PARA FIM                        
+P07      EQU   *           TRATAR N1 = N2 E N1 > N3 
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                     
+         MVC   MSGOUT(30),=C'N1 E N2 SAO OS MAIORES VALORES'       
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                   
+         B     P99         DESVIAR PARA FIM                        
+P08      EQU   *           TRATAR N1 = N2 E N1 = N3                
+         MVC   MSGOUT,=CL132' '  LIMPAR MSGOUT                     
+         MVC   MSGOUT(34),=C'N1, N2 E N3 SAO OS MAIORES VALORES'   
+         PUT   SAIDA,MSG         EXIBIR MENSAGEM                   
+*               FECHAR ARQUIVOS                                    
+P99      EQU   *                                                   
+         CLOSE ENTRADA           FECHAR ENTRADA                    
+         CLOSE SAIDA             FECHAR SAIDA                      
+*****************  VOLTAR PARA CHAMADOR **************             
+         TERMINO               MACRO TERMINO                       
+*****************  VARIAVEIS  ************************             
+N1       DS    CL2   
+N2       DS    CL2                                                  
+N3       DS    CL2                                                  
+*                                                                   
+DADOS    DS    0CL80               AREA DE LEITURA, ONDE FAZ O GET  
+DADOIN   DS    CL2                                                  
+         DC    78CL1' '                                             
+*                                                                   
+MSG      DS    0CL133                                               
+         DC    CL1' '                                               
+MSGOUT   DS    CL132                                                
+******************************************************              
+SAIDA    DCB   DDNAME=SAIDA,      NOME DO ARQUIVO                   
+               DSORG=PS,                                            
+               MACRF=PM,                                            
+               LRECL=133,                                           
+               RECFM=FBA,                                                                                                        		 
+               BLKSIZE=6650                            
+****************************************************** 
+ENTRADA  DCB   DDNAME=ENTRADA,    NOME DO ARQUIVO      
+               DSORG=PS,                               
+               MACRF=GM,                               
+               LRECL=80,                               
+               RECFM=FB,                               
+               BLKSIZE=4000,                           
+               EODAD=FIMARQ                            
+         LTORG                                         
+         END                                           			   

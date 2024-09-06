@@ -1,0 +1,7 @@
+//EAD46403 JOB 'COMP ASM',MSGCLASS=X,CLASS=C,NOTIFY=EAD464         
+//*================================================================
+//* JCL PARA COMPILAR ASSEMBLER                                    
+//*  NAME - SEU PROGRAMA   -   INSTR = SUA CHAVE                   
+//*================================================================
+//         JCLLIB ORDER=GR.GERAL.PROCLIB                           
+//MAPSAMP  EXEC DFHASSM,NAME=EAD46403,INSTR='EAD464'               

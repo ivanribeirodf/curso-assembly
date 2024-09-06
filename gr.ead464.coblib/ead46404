@@ -1,0 +1,81 @@
+EAD46404 CSECT                                                          
+         INICIO EAD46404,R3    MACRO INICIO                             
+*****************  ABRIR ARQUIVOS ********************                  
+         OPEN  (ENTRADA,INPUT)                                          
+         OPEN  (SAIDA,OUTPUT)                                           
+         GET   ENTRADA,DADOS                                            
+         PACK  N1,DADOIN                                                
+         MVC   N1OUT,MASCARA                                            
+         ED    N1OUT,N1                                                 
+         GET   ENTRADA,DADOS                                            
+         PACK  N2,DADOIN                                                
+         MVC   N2OUT,MASCARA                                            
+         ED    N2OUT,N2                                                 
+FIMARQ   EQU   *                                                        
+***************** MULTIPLICACAO **********************                  
+         ZAP   TRABALHO,N1                                              
+         MP    TRABALHO,N2                                    
+         ZAP   RESULT,TRABALHO                                
+         MVC   RESULTO,MASCARA                                
+         ED    RESULTO,RESULT                                 
+         MVI   SINAL,C'*'                                     
+         PUT   SAIDA,MSG                                      
+**************** DIVISAO      **********************          
+         ZAP   TRABALHO,N1                                    
+         DP    TRABALHO,N2                                    
+         MVC   RESULT,TRABALHO                                
+         MVC   RESULTO,MASCARA                                
+         ED    RESULTO,RESULT                                 
+         MVI   SINAL,C'/'                                     
+         PUT   SAIDA,MSG                                      
+**************** RESTO DA DIVISAO ******************          
+         MVC   RESULT,TRABALHO+4                              
+         MVC   RESTOO,MASCARA                          
+         ED    RESTOO,RESULT                           
+         PUT   SAIDA,MSGRESTO                          
+*               FECHAR ARQUIVOS                        
+         CLOSE ENTRADA                                 
+         CLOSE SAIDA                                   
+*****************  VOLTAR PARA CHAMADOR ************** 
+         TERMINO               MACRO TERMINO           
+*****************  VARIAVEIS  ************************ 
+DADOS    DS    0CL80                                   
+DADOIN   DS    CL6                                     
+         DC    74CL1' '                                
+*                                                      
+N1       DS    PL4                                     
+N2       DS    PL4                                     
+TRABALHO DS    PL8                                     
+RESULT   DS    PL4                                     
+MASCARA  DC    XL11'40204B2020204B20212060'            
+*                                                      
+MSG      DS    0CL133                                  
+         DC    CL1' '                                  
+N1OUT    DS    CL11                                    
+SINAL    DS    CL1                                     
+N2OUT    DS    CL11                                    
+         DC    CL1'='                                  
+RESULTO  DS    CL11                                    
+         DC    97CL1' '                                
+****************************************************** 
+MSGRESTO DS    0CL133                                  
+         DC    CL1' '                                  
+         DC    CL8'RESTO = '                           
+RESTOO   DS    CL11                                    
+         DC    113CL1' '                                                
+******************************************************                  
+SAIDA    DCB   DDNAME=SAIDA,      NOME DO ARQUIVO                      *
+               DSORG=PS,                                               *
+               MACRF=PM,                                               *
+               LRECL=133,                                              *
+               RECFM=FBA,                                              *
+               BLKSIZE=6650                                             
+******************************************************                  
+ENTRADA  DCB   DDNAME=ENTRADA,    NOME DO ARQUIVO                      *
+               DSORG=PS,                                               *
+               MACRF=GM,                                               *
+               LRECL=80,                                               *
+               RECFM=FB,                                               *
+               BLKSIZE=4000,                                           *
+               EODAD=FIMARQ                                             
+         END

@@ -1,0 +1,117 @@
+EAD46405 CSECT                                                       
+         INICIO EAD46405,R3    MACRO INICIO                          
+*****************  ABRIR ARQUIVOS ********************               
+         OPEN  (ENTRADA,INPUT)    ABRIR ENTRADA                      
+         OPEN  (SAIDA,OUTPUT)     ABRIR SAIDA                        
+         GET   ENTRADA,DADOS      LER PRIMEIRO NUMERO                
+         PACK  N1,DADOIN          COMPACTAR EM N1                    
+         MVC   N1OUT,=X'4020204B2021206B202060'  MARCARA PARA N1OUT  
+         ED    N1OUT,N1           EDITAR N1                          
+         GET   ENTRADA,DADOS      LER SEGUNDO NUMERO                 
+         PACK  N2,DADOIN          COMPACTAR EM N2                    
+         MVC   N2OUT,=X'402020204B2021206B2060'  MASCARA PARA N2OUT  
+         ED    N2OUT,N2           EDITAR N2                          
+FIMARQ   EQU   *                                                     
+***************** SOMA          **********************               
+         ZAP   TRABALHO,N1       MONTAR N1 EM 64 BITS                
+         CVB   R4,TRABALHO       CONVERTER PARA BINARIO EM R4         
+         ZAP   TRABALHO,N2       MONTAR N2 EM 64 BITS                 
+         SRP   TRABALHO,1,0      AUMENTAR 1 ALGARISMO EM N2           
+         CVB   R5,TRABALHO       CONVERTER PARA BINARIO EM R4         
+         AR    R4,R5             SOMAR N2(R5) EM N1(R4)               
+         CVD   R4,TRABALHO       CONVERTER RESULTADO PARA PACK        
+         ZAP   RESULT,TRABALHO   CARREGAR RESULTADO                   
+         MVC   RESULTO,=X'4020204B2021206B202060' MARCARA DO RESULTADO
+         ED    RESULTO,RESULT    EDITAR RESULTADO                     
+         MVI   SINAL,C'+'        SINAL DE SOMA                        
+         PUT   SAIDA,MSG         EXIBIR RESLTADO                      
+***************** SUBTRACAO     **********************                
+         ZAP   TRABALHO,N1       MONTAR N1 EM 64 BITS                 
+         CVB   R4,TRABALHO       CONVERTER PARA BINARIO EM R4         
+         ZAP   TRABALHO,N2       MONTAR N2 EM 64 BITS                 
+         SRP   TRABALHO,1,0      AUMENTAR 1 ALGARISMO EM N2     
+         CVB   R5,TRABALHO       CONVERTER PARA BINARIO EM R4         
+         SR    R4,R5             SUBTRAIR N2(R5) EM N1(R4)            
+         CVD   R4,TRABALHO       CONVERTER RESULTADO PARA PACK        
+         ZAP   RESULT,TRABALHO   CARREGAR RESULTADO                   
+         MVC   RESULTO,=X'4020204B2021206B202060' MARCARA DO RESULTADO
+         ED    RESULTO,RESULT    EDITAR RESULTADO                     
+         MVI   SINAL,C'-'        SINAL DE SOMA                        
+         PUT   SAIDA,MSG         EXIBIR RESLTADO                      
+***************** MULTIPLICACAO **********************                
+         ZAP   TRABALHO,N1       MONTAR N1 EM 64 BITS                 
+         CVB   R5,TRABALHO       CONVERTER PARA BINARIO EM R5         
+         ZAP   TRABALHO,N2       MONTAR N2 EM 64 BITS                 
+         CVB   R6,TRABALHO       CONVERTER PARA BINARIO EM R4         
+         ST    R6,N2B            SALVAR R6(N2) EM N2B (FULL)          
+         M     R4,N2B            MULTIPLICAR N2B PLOS REGS R4/R5      
+         CVD   R5,TRABALHO       CONVERTER RESULTADO (R5) PARA PACK   
+         SRP   TRABALHO,64-1,5   DIMINUIR 1 ALGARISMO COM ARREDOND.   
+         ZAP   RESULT,TRABALHO   CARREGAR RESULTADO                   
+         MVC   RESULTO,=X'4020204B2021206B202060' MARCARA DO RESULTADO
+         ED    RESULTO,RESULT    EDITAR RESULTADO                     
+         MVI   SINAL,C'*'        SINAL DE SOMA                        
+         PUT   SAIDA,MSG         EXIBIR RESLTADO                      
+***************** DIVISAO       **********************                
+         ZAP   TRABALHO,N1       MONTAR N1 EM 64 BITS                 
+         SRP   TRABALHO,2,0      AUMENTA 2 ALGARISMOS NA N1           
+         CVB   R4,TRABALHO       CONVERTER PARA BINARIO EM R4         
+         SRDA  R4,32             DESLOCA R4 32 BITS P/ DIREITA        
+         ZAP   TRABALHO,N2       MONTAR N2 EM 64 BITS                 
+         CVB   R6,TRABALHO       CONVERTER PARA BINARIO EM R4         
+         ST    R6,N2B            SALVAR R6(N2) EM N2B (FULL)          
+         D     R4,N2B            DIVIDIR N2B PLOS REGS R4/R5          
+         CVD   R5,TRABALHO       CONVERTER RESULTADO (R5) PARA PACK   
+         SRP   TRABALHO,64-1,5   DIMINUIR 1 ALGARISMO COM ARREDOND.    
+         ZAP   RESULT,TRABALHO   CARREGAR RESULTADO                    
+         MVC   RESULTO,=X'4020204B2021206B202060' MARCARA DO RESULTADO 
+         ED    RESULTO,RESULT    EDITAR RESULTADO                      
+         MVI   SINAL,C'/'        SINAL DE SOMA                         
+         PUT   SAIDA,MSG         EXIBIR RESLTADO                       
+*               FECHAR ARQUIVOS                                        
+         CLOSE ENTRADA           FECHAR ENTRADA                        
+         CLOSE SAIDA             FECHAR SAIDA                          
+*****************  VOLTAR PARA CHAMADOR **************                 
+         TERMINO               MACRO TERMINO                           
+*****************  VARIAVEIS  ************************                 
+N2B      DS    F                                                       
+N1       DS    PL4                                                     
+N2       DS    PL4                                                     
+TRABALHO DS    PL8   
+RESULT   DS    PL4                                                    
+*                                                                     
+DADOS    DS    0CL80                                                  
+DADOIN   DS    CL6                                                    
+         DC    74CL1' '                                               
+*                                                                     
+MSG      DS    0CL133                                                 
+         DC    CL1' '                                                 
+N1OUT    DS    CL11                                                   
+SINAL    DS    CL1                                                    
+N2OUT    DS    CL11                                                   
+         DC    CL1'='                                                 
+RESULTO  DS    CL11                                                   
+         DC    97CL1' '                                               
+******************************************************                
+MSGRESTO DS    0CL133  
+                                                                                                 		          DC    CL1' '                                  
+         DC    CL8'RESTO = '                           
+RESTOO   DS    CL11                                    
+         DC    113CL1' '                               
+****************************************************** 
+SAIDA    DCB   DDNAME=SAIDA,      NOME DO ARQUIVO      
+               DSORG=PS,                               
+               MACRF=PM,                               
+               LRECL=133,                              
+               RECFM=FBA,                              
+               BLKSIZE=6650                            
+****************************************************** 
+ENTRADA  DCB   DDNAME=ENTRADA,    NOME DO ARQUIVO      
+               DSORG=PS,                               
+               MACRF=GM,                               
+               LRECL=80,                               
+               RECFM=FB,           
+               BLKSIZE=4000,       
+               EODAD=FIMARQ        
+         LTORG                     
+         END                       			   

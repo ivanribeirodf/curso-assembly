@@ -1,0 +1,18 @@
+EAD46402 CSECT                                                          
+         INICIO EAD46402,R3    MACRO INICIO                             
+         OPEN  (SAIDA,OUTPUT)  ABRIR SAIDA                              
+         PUT   SAIDA,MSG       GRAVAR MENSAGEM                          
+         CLOSE SAIDA           FECHAR SAIDA                             
+         TERMINO               MACRO TERMINO                            
+*********  VARIAVEIS *************                                      
+MSG      DS    0CL133                                                   
+         DC    CL1' '                                                   
+         DC    CL11'HELLO WORLD'                                        
+         DC    121CL1' '                                                
+SAIDA    DCB   DDNAME=SAIDA,      NOME DO ARQUIVO                      *
+               DSORG=PS,                                               *
+               MACRF=PM,                                               *
+               LRECL=133,                                              *
+               RECFM=FBA,                                              *
+               BLKSIZE=6650                                             
+         END                                                            

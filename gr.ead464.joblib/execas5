@@ -1,0 +1,8 @@
+//EAD46405 JOB 'EAD464',CLASS=C,MSGCLASS=X,NOTIFY=EAD464,TIME=(0,10)
+//********************                                              
+//EXECUT   EXEC PGM=EAD46405                                        
+//STEPLIB  DD   DSN=GR.GERAL.LOADLIB,DISP=SHR                       
+//SAIDA    DD  SYSOUT=*                                             
+//ENTRADA  DD  *                                                    
+002442                                                              
+000137                                                              
